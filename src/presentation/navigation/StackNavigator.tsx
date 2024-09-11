@@ -23,7 +23,9 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
 
 export const StackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      initialRouteName="OnboardingScreen"
+      screenOptions={{headerShown: false}}>
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
