@@ -1,4 +1,6 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {Button, Layout, Text} from '@ui-kitten/components';
 import React, {useRef, useState} from 'react';
 import {
   FlatList,
@@ -7,13 +9,12 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
-  Text,
   useWindowDimensions,
   View,
 } from 'react-native';
 import {colors} from '../../../config/colors';
 import {RootStackParams} from '../../navigation/StackNavigator';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {MyIcon} from '../../components/ui/MyIcon';
 
 interface Slide {
   title: string;
@@ -62,7 +63,7 @@ export const OnboardingScreen = () => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colors.background}}>
+    <Layout style={{flex: 1, backgroundColor: colors.background}}>
       {/*    <StatusBar
         barStyle="dark-content"
         backgroundColor="transparent"
@@ -83,20 +84,26 @@ export const OnboardingScreen = () => {
       />
 
       {currentSlideIndex === items.length - 1 ? (
-        <Pressable
-          // onPress={() => navigation.navigate('HomeScreen')}
-          onPress={handleFinish}
-          style={{position: 'absolute', bottom: 60, right: 30, width: 100}}>
-          <Text>Finalizar</Text>
-        </Pressable>
+        <Layout
+          style={{position: 'absolute', bottom: 60, right: 30, width: 120}}>
+          <Button
+            onPress={() => scrollToSlide(currentSlideIndex - 1)}
+            accessoryRight={<MyIcon name="arrow-forward-outline" white />}>
+            Volver
+          </Button>
+          <Button onPress={handleFinish}>Finalizar</Button>
+        </Layout>
       ) : (
-        <Pressable
-          onPress={() => scrollToSlide(currentSlideIndex + 1)}
-          style={{position: 'absolute', bottom: 60, right: 30, width: 100}}>
-          <Text>Siguiente</Text>
-        </Pressable>
+        <Layout
+          style={{position: 'absolute', bottom: 60, right: 30, width: 120}}>
+          <Button
+            onPress={() => scrollToSlide(currentSlideIndex + 1)}
+            accessoryRight={<MyIcon name="arrow-forward-outline" white />}>
+            Siguiente
+          </Button>
+        </Layout>
       )}
-    </View>
+    </Layout>
   );
 };
 
