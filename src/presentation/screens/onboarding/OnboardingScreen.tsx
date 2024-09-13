@@ -1,21 +1,19 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import React, {useRef, useState} from 'react';
 import {
-  Button,
   FlatList,
   Image,
   ImageSourcePropType,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
-  SafeAreaView,
-  StatusBar,
   Text,
   useWindowDimensions,
   View,
 } from 'react-native';
 import {colors} from '../../../config/colors';
 import {RootStackParams} from '../../navigation/StackNavigator';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 interface Slide {
   title: string;
@@ -30,21 +28,16 @@ const items: Slide[] = [
     img: require('../../assets/slide-1.png'),
   },
   {
-    title: 'Titulo 2',
-    desc: 'Anim est quis elit proident magna quis cupidatat curlpa labore Lorem ea. Exercitation mollit velit in aliquip tempor occaecat dolor minim amet dolor enim cillum excepteur. ',
+    title: 'Acuerdos',
+    desc: 'Lorem lorem lorem lorem ',
     img: require('../../assets/slide-2.png'),
-  },
-  {
-    title: 'Titulo 3',
-    desc: 'Ex amet duis amet nulla. Aliquip ea Lorem ea culpa consequat proident. Nulla tempor esse ad tempor sit amet Lorem. Velit ea labore aute pariatur commodo duis veniam enim.',
-    img: require('../../assets/slide-3.png'),
   },
 ];
 
 export const OnboardingScreen = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
-  const navigation = useNavigation<NavigationProp<RootStackParams>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const {contentOffset, layoutMeasurement} = event.nativeEvent;
@@ -59,9 +52,18 @@ export const OnboardingScreen = () => {
 
     flatListRef.current.scrollToIndex({index: index, animated: true});
   };
+
+  const handleFinish = () => {
+    // Navegar a HomeScreen y reemplazar la pantalla de OnboardingScreen
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'HomeScreen'}],
+    });
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: colors.background}}>
-   {/*    <StatusBar
+      {/*    <StatusBar
         barStyle="dark-content"
         backgroundColor="transparent"
         translucent
@@ -82,7 +84,8 @@ export const OnboardingScreen = () => {
 
       {currentSlideIndex === items.length - 1 ? (
         <Pressable
-          onPress={() => navigation.navigate('HomeScreen')}
+          // onPress={() => navigation.navigate('HomeScreen')}
+          onPress={handleFinish}
           style={{position: 'absolute', bottom: 60, right: 30, width: 100}}>
           <Text>Finalizar</Text>
         </Pressable>
