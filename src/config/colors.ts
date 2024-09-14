@@ -1,16 +1,17 @@
 export interface ThemeColors {
   primary: string;
-  text: string;
+  secondary: string;
+  terciary: string;
   background: string;
-  cardBackground: string;
-  buttonTextColor: string;
+
+  text: string;
 }
 
 export const colors: ThemeColors = {
-  primary: '#5856D6',
-  text: 'black',
+  primary: '#009CCC',
+  secondary: '#007DA3',
+  terciary: '#005E7A',
+  background: '#F1F6F8',
 
-  background: '#F3F2F7',
-  cardBackground: 'white',
-  buttonTextColor: 'white',
+  text: '#D6E5Ea',
 };
