@@ -37,8 +37,8 @@ export const OnboardingScreen = () => {
       <Image
         source={require('../../assets/aidi_logo.png')}
         style={{
-          width: width, // Ajustar el ancho de la imagen
-          resizeMode: 'contain', // Ajustar la imagen para que mantenga su proporción
+          width: width,
+          resizeMode: 'contain',
           backgroundColor: 'red',
         }}
       />
