@@ -1,40 +1,82 @@
-import {StackScreenProps} from '@react-navigation/stack';
 import React, {useState} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
+import {Input, Button} from '@ui-kitten/components';
+import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../navigation/StackNavigator';
-import {Button, Input} from '@ui-kitten/components';
 
 interface Props extends StackScreenProps<RootStackParams, 'ScanResultScreen'> {}
 
-export const ScanResultScreen = ({route, navigation}: Props) => {
-  const {scannedData} = route.params;
-  const [formData, setFormData] = useState(scannedData.split('@'));
+export const ScanResultScreen = ({route}: Props) => {
+  const {dni, name} = route.params;
+  const [formData, setFormData] = useState<{
+    dni: string;
+    name: string;
+    email: string;
+    phone: string;
+  }>({
+    dni,
+    name,
+    email: '',
+    phone: '',
+  });
 
-  const handleChange = (index: number, value: string) => {
-    const updatedData = [...formData];
-    updatedData[index] = value;
-    setFormData(updatedData);
+  const handleChange = (
+    field: 'dni' | 'name' | 'email' | 'phone',
+    value: string,
+  ) => {
+    setFormData(prevState => ({
+      ...prevState,
+      [field]: value,
+    }));
   };
 
   const handleSubmit = () => {
-    const formattedData = formData.join('@');
+    const dniNumber = Number(formData.dni);
+    const phoneNumber = Number(formData.phone);
+
+    // Verificar si la conversión fue exitosa
+    if (isNaN(dniNumber) || isNaN(phoneNumber)) {
+      Alert.alert('Error', 'DNI o teléfono no son válidos');
+      return;
+    }
+
     Alert.alert(
       'Datos Guardados',
-      `Los datos se han guardado: ${formattedData}`,
+      `Datos guardados:\nDNI: ${formData.dni}\nNombre: ${formData.name}\nEmail: ${formData.email}\nTeléfono: ${formData.phone}`,
     );
   };
 
   return (
     <View style={styles.container}>
-      {formData.map((data, index) => (
-        <Input
-          key={index}
-          placeholder={`Campo ${index + 1}`}
-          value={data}
-          onChangeText={text => handleChange(index, text)}
-          style={styles.input}
-        />
-      ))}
+      <Input
+        placeholder="DNI"
+        value={formData.dni}
+        onChangeText={text => handleChange('dni', text)}
+        keyboardType="numeric"
+        maxLength={8}
+        style={styles.input}
+      />
+      <Input
+        placeholder="Nombre"
+        value={formData.name}
+        onChangeText={text => handleChange('name', text)}
+        style={styles.input}
+      />
+      <Input
+        placeholder="Email"
+        value={formData.email}
+        onChangeText={text => handleChange('email', text)}
+        style={styles.input}
+      />
+      <Input
+        placeholder="Teléfono"
+        value={formData.phone}
+        onChangeText={text => handleChange('phone', text)}
+        // keyboardType="phone-pad" // Aca seria asi si en la bdd acepta string en lugar de numero
+        keyboardType="numeric"
+        maxLength={8}
+        style={styles.input}
+      />
       <Button status="primary" onPress={handleSubmit}>
         Guardar
       </Button>

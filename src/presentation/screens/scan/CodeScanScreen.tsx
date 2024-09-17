@@ -9,21 +9,28 @@ export const CodeScanScreen = () => {
   const [data, setData] = useState<string | null>(null);
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
-  const validateData = (data: string): boolean => {
-    return data.includes('@');
-  };
-
-  const formatData = (data: string): string => {
-    // Eliminar caracteres no deseados
-    return data.replace(/[^\w\s@]/g, '').trim();
+  const formatData = (data: string): {dni: string; name: string} | null => {
+    const parts = data.split('@');
+    console.log(parts);
+    
+    if (parts.length >= 3) {
+      return {
+        dni: parts[4], // Suponiendo que el DNI está en la quinta posición
+        name: `${parts[1]} ${parts[2]}`, // Suponiendo nombre y apellido en la segunda y tercera posición
+      };
+    }
+    return null;
   };
 
   const handleQRCodeRead = ({data}: {data: string}) => {
     const formattedData = formatData(data);
 
-    if (validateData(formattedData)) {
-      setData(formattedData);
-      navigation.navigate('ScanResultScreen', {scannedData: formattedData});
+    if (formattedData) {
+      setData(data);
+      navigation.navigate('ScanResultScreen', {
+        dni: formattedData.dni,
+        name: formattedData.name,
+      });
     } else {
       Alert.alert(
         'Error',
@@ -32,7 +39,6 @@ export const CodeScanScreen = () => {
     }
   };
 
-  
   return (
     <QRCodeScanner
       onRead={handleQRCodeRead}
@@ -63,4 +69,3 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 });
-

@@ -13,7 +13,7 @@ export type RootStackParams = {
   HomeScreen: undefined;
   ScanInfoScreen: undefined;
   CodeScanScreen: undefined;
-  ScanResultScreen: { scannedData: string };
+  ScanResultScreen: {dni: string; name: string};
   //   ProductScreen: {productId: string};
 };
 
