@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
-import {Input, Button} from '@ui-kitten/components';
 import {StackScreenProps} from '@react-navigation/stack';
+import {Button, Input} from '@ui-kitten/components';
+import React, {useEffect, useState} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+import {StorageAdapter} from '../../../config/adapters/storage-adapter';
 import {RootStackParams} from '../../navigation/StackNavigator';
 import {LoadingScreen} from '../loading/LoadingScreen';
 
@@ -24,7 +25,7 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
     name,
     email: '',
     phone: '',
-    cuil: 12312153,
+    cuil: 878,
   });
 
   const handleChange = (
@@ -64,6 +65,7 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
       const result = await response.json();
 
       if (response.ok) {
+        await StorageAdapter.setItem('onboardingCompleted', 'true');
         setTimeout(() => {
           setLoading(false);
           navigation.reset({

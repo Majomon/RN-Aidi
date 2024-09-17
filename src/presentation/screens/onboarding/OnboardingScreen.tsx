@@ -15,20 +15,6 @@ export const OnboardingScreen = () => {
     Linking.openURL('https://akveo.github.io/react-native-ui-kitten/');
   };
 
-  // const handleFinish = async () => {
-  //   try {
-  //     // Guarda el estado de finalización en AsyncStorage
-  //     await StorageAdapter.setItem('onboardingCompleted', 'true');
-
-  //     // Navegar a HomeScreen y reemplazar la pantalla de OnboardingScreen
-  //     navigation.reset({
-  //       index: 0,
-  //       routes: [{name: 'HomeScreen'}],
-  //     });
-  //   } catch (error) {
-  //     console.error('Error al guardar el estado de finalización:', error);
-  //   }
-  // };
 
   return (
     <Layout

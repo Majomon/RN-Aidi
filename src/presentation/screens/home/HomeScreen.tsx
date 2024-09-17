@@ -1,24 +1,34 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
-import {StorageAdapter} from '../../../config/adapters/storage-adapter';
+import {Layout, Text} from '@ui-kitten/components';
+import React from 'react';
+import {colors} from '../../../config/colors';
 
 export const HomeScreen = () => {
-  const [onboardingCompleted, setOnboardingCompleted] = useState(false);
-
-  useEffect(() => {
-    const checkOnboardingStatus = async () => {
-      const completed = await StorageAdapter.getItem('onboardingCompleted');
-      setOnboardingCompleted(completed === 'true');
-    };
-
-    checkOnboardingStatus();
-  }, [onboardingCompleted]);
-
-  console.log(onboardingCompleted);
-  
   return (
-    <View >
-      <Text>HomeScreen</Text>
-    </View>
+    <Layout style={{flex: 1}}>
+      <Layout
+        style={{
+          padding: 10,
+          backgroundColor: colors.primary,
+        }}>
+        <Text category="h1" style={{textAlign: 'center'}}>
+          Datos
+        </Text>
+      </Layout>
+
+      <Layout style={{marginHorizontal: 20, gap: 30}}>
+        <Layout>
+          <Text category="h5">Nombre:</Text>
+          <Text>Hola Juan</Text>
+        </Layout>
+        <Layout>
+          <Text category="h5">Email:</Text>
+          <Text>algo@algo.com</Text>
+        </Layout>
+        <Layout>
+          <Text category="h5">Teléfono:</Text>
+          <Text>1122334455</Text>
+        </Layout>
+      </Layout>
+    </Layout>
   );
 };

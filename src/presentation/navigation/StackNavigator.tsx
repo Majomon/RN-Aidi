@@ -1,13 +1,15 @@
 import {
   createStackNavigator,
-  StackCardStyleInterpolator,
+  StackCardStyleInterpolator
 } from '@react-navigation/stack';
-import {OnboardingScreen} from '../screens/onboarding/OnboardingScreen';
-import {ProfileScreen} from '../screens/profile/ProfileScreen';
-import {ScanResultScreen} from '../screens/resultScan/ScanResultScreen';
-import {CodeScanScreen} from '../screens/scan/CodeScanScreen';
-import {ScanInfoScreen} from '../screens/scan/ScanInfoScreen';
-import {BottomTabNavigator} from './BottomTabNavigator';
+import { useEffect, useState } from 'react';
+import { StorageAdapter } from '../../config/adapters/storage-adapter';
+import { LoadingScreen } from '../screens/loading/LoadingScreen';
+import { OnboardingScreen } from '../screens/onboarding/OnboardingScreen';
+import { ScanResultScreen } from '../screens/resultScan/ScanResultScreen';
+import { CodeScanScreen } from '../screens/scan/CodeScanScreen';
+import { ScanInfoScreen } from '../screens/scan/ScanInfoScreen';
+import { BottomTabNavigator } from './BottomTabNavigator';
 
 export type RootStackParams = {
   OnboardingScreen: undefined;
@@ -28,9 +30,37 @@ const fadeAnimation: StackCardStyleInterpolator = ({current}) => {
 };
 
 export const StackNavigator = () => {
+  const [initialRoute, setInitialRoute] = useState<
+    keyof RootStackParams | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const checkOnboardingStatus = async () => {
+      try {
+        const hasCompletedOnboarding = await StorageAdapter.getItem(
+          'onboardingCompleted',
+        );
+
+        if (hasCompletedOnboarding == 'true') {
+          setInitialRoute('BottomTabNavigator');
+        } else {
+          setInitialRoute('OnboardingScreen');
+        }
+      } catch (error) {
+        console.log('Error checking local storage', error);
+        setInitialRoute('OnboardingScreen');
+      }
+    };
+
+    checkOnboardingStatus();
+  }, []);
+
+  if (!initialRoute) {
+    return <LoadingScreen />;
+  }
   return (
     <Stack.Navigator
-      initialRouteName="OnboardingScreen"
+      initialRouteName={initialRoute}
       screenOptions={{headerShown: false}}>
       <Stack.Screen
         name="OnboardingScreen"
@@ -53,7 +83,7 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation}}
       />
       <Stack.Screen
-        name="BottomTabNavigator" 
+        name="BottomTabNavigator"
         component={BottomTabNavigator}
         options={{cardStyleInterpolator: fadeAnimation}}
       />
