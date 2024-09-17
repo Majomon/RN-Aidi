@@ -17,7 +17,7 @@ export const HomeScreen = () => {
   console.log(onboardingCompleted);
   
   return (
-    <View>
+    <View >
       <Text>HomeScreen</Text>
     </View>
   );
