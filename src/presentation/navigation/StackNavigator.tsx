@@ -2,22 +2,19 @@ import {
   createStackNavigator,
   StackCardStyleInterpolator,
 } from '@react-navigation/stack';
-import {HomeScreen} from '../screens/home/HomeScreen';
 import {OnboardingScreen} from '../screens/onboarding/OnboardingScreen';
-import {ScanResultScreen} from '../screens/resultScan/ScanResultScreen';
-import {ScanInfoScreen} from '../screens/scan/ScanInfoScreen';
-import {CodeScanScreen} from '../screens/scan/CodeScanScreen';
 import {ProfileScreen} from '../screens/profile/ProfileScreen';
+import {ScanResultScreen} from '../screens/resultScan/ScanResultScreen';
+import {CodeScanScreen} from '../screens/scan/CodeScanScreen';
+import {ScanInfoScreen} from '../screens/scan/ScanInfoScreen';
+import {BottomTabNavigator} from './BottomTabNavigator';
 
 export type RootStackParams = {
   OnboardingScreen: undefined;
-  HomeScreen: undefined;
   ScanInfoScreen: undefined;
   CodeScanScreen: undefined;
   ScanResultScreen: {dni: string; name: string};
-  ProfileScreen: undefined;
-
-  //   ProductScreen: {productId: string};
+  BottomTabNavigator: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -35,11 +32,6 @@ export const StackNavigator = () => {
     <Stack.Navigator
       initialRouteName="OnboardingScreen"
       screenOptions={{headerShown: false}}>
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{cardStyleInterpolator: fadeAnimation}}
-      />
       <Stack.Screen
         name="OnboardingScreen"
         component={OnboardingScreen}
@@ -61,8 +53,8 @@ export const StackNavigator = () => {
         options={{cardStyleInterpolator: fadeAnimation}}
       />
       <Stack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
+        name="BottomTabNavigator" 
+        component={BottomTabNavigator}
         options={{cardStyleInterpolator: fadeAnimation}}
       />
     </Stack.Navigator>

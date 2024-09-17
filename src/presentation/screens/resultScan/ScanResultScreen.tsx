@@ -68,7 +68,7 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
           setLoading(false);
           navigation.reset({
             index: 0,
-            routes: [{name: 'ProfileScreen'}],
+            routes: [{name: 'BottomTabNavigator'}],
           });
         }, 1000);
       } else {
