@@ -7,6 +7,7 @@ import {OnboardingScreen} from '../screens/onboarding/OnboardingScreen';
 import {ScanResultScreen} from '../screens/resultScan/ScanResultScreen';
 import {ScanInfoScreen} from '../screens/scan/ScanInfoScreen';
 import {CodeScanScreen} from '../screens/scan/CodeScanScreen';
+import {ProfileScreen} from '../screens/profile/ProfileScreen';
 
 export type RootStackParams = {
   OnboardingScreen: undefined;
@@ -14,6 +15,8 @@ export type RootStackParams = {
   ScanInfoScreen: undefined;
   CodeScanScreen: undefined;
   ScanResultScreen: {dni: string; name: string};
+  ProfileScreen: undefined;
+
   //   ProductScreen: {productId: string};
 };
 
@@ -55,6 +58,11 @@ export const StackNavigator = () => {
       <Stack.Screen
         name="ScanResultScreen"
         component={ScanResultScreen}
+        options={{cardStyleInterpolator: fadeAnimation}}
+      />
+      <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
         options={{cardStyleInterpolator: fadeAnimation}}
       />
     </Stack.Navigator>

@@ -1,23 +1,30 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Alert} from 'react-native';
 import {Input, Button} from '@ui-kitten/components';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../navigation/StackNavigator';
+import {LoadingScreen} from '../loading/LoadingScreen';
+
+interface FormData {
+  dni: string;
+  name: string;
+  email: string;
+  phone: string;
+  cuil: number;
+}
 
 interface Props extends StackScreenProps<RootStackParams, 'ScanResultScreen'> {}
 
-export const ScanResultScreen = ({route}: Props) => {
+export const ScanResultScreen = ({route, navigation}: Props) => {
   const {dni, name} = route.params;
-  const [formData, setFormData] = useState<{
-    dni: string;
-    name: string;
-    email: string;
-    phone: string;
-  }>({
+  const [isFormComplete, setIsFormComplete] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
     dni,
     name,
     email: '',
     phone: '',
+    cuil: 12312153,
   });
 
   const handleChange = (
@@ -30,7 +37,7 @@ export const ScanResultScreen = ({route}: Props) => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const dniNumber = Number(formData.dni);
     const phoneNumber = Number(formData.phone);
 
@@ -40,11 +47,51 @@ export const ScanResultScreen = ({route}: Props) => {
       return;
     }
 
-    Alert.alert(
-      'Datos Guardados',
-      `Datos guardados:\nDNI: ${formData.dni}\nNombre: ${formData.name}\nEmail: ${formData.email}\nTeléfono: ${formData.phone}`,
-    );
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        'http://192.168.0.6:3003/api/users/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setTimeout(() => {
+          setLoading(false);
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'ProfileScreen'}],
+          });
+        }, 1000);
+      } else {
+        setLoading(false);
+        Alert.alert('Error', result.message || 'Error al guardar los datos');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Error de red o servidor');
+    }
   };
+
+  useEffect(() => {
+    const {dni, name, email, phone} = formData;
+    if (dni && name && email && phone) {
+      setIsFormComplete(true);
+    } else {
+      setIsFormComplete(false);
+    }
+  }, [formData]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <View style={styles.container}>
@@ -66,6 +113,7 @@ export const ScanResultScreen = ({route}: Props) => {
         placeholder="Email"
         value={formData.email}
         onChangeText={text => handleChange('email', text)}
+        keyboardType="email-address"
         style={styles.input}
       />
       <Input
@@ -77,7 +125,10 @@ export const ScanResultScreen = ({route}: Props) => {
         maxLength={8}
         style={styles.input}
       />
-      <Button status="primary" onPress={handleSubmit}>
+      <Button
+        status="primary"
+        onPress={handleSubmit}
+        disabled={!isFormComplete}>
         Guardar
       </Button>
     </View>
