@@ -17,14 +17,11 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
   };
 
   const handleSubmit = () => {
-    // Aquí podrías validar y enviar los datos o guardarlos en el estado
-    const formattedData = formData.join('@'); // Reconstruye la cadena de datos
-    // Aquí podrías enviar los datos a un servidor o guardarlos en el estado
+    const formattedData = formData.join('@');
     Alert.alert(
       'Datos Guardados',
       `Los datos se han guardado: ${formattedData}`,
     );
-    // Navegar a la siguiente pantalla o realizar otra acción
   };
 
   return (
