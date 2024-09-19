@@ -1,19 +1,16 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useState } from 'react';
-import { HomeScreen } from '../screens/home/HomeScreen';
-import { InteraccionScreen } from '../screens/Interaccion/InteraccionScreen';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {HomeScreen} from '../screens/home/HomeScreen';
+import {InteraccionScreen} from '../screens/Interaccion/InteraccionScreen';
 
-export type RootStackParams = {
+export type RootStackParamsBottom = {
   HomeScreen: undefined;
   InteraccionScreen: undefined;
   // ScanResultScreen: {dni: string; name: string};
 };
 
-const Tab = createBottomTabNavigator<RootStackParams>();
+const Tab = createBottomTabNavigator<RootStackParamsBottom>();
 
 export const BottomTabNavigator = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
   return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen

@@ -1,15 +1,15 @@
 import {
   createStackNavigator,
-  StackCardStyleInterpolator
+  StackCardStyleInterpolator,
 } from '@react-navigation/stack';
-import { useEffect, useState } from 'react';
-import { StorageAdapter } from '../../config/adapters/storage-adapter';
-import { LoadingScreen } from '../screens/loading/LoadingScreen';
-import { OnboardingScreen } from '../screens/onboarding/OnboardingScreen';
-import { ScanResultScreen } from '../screens/resultScan/ScanResultScreen';
-import { CodeScanScreen } from '../screens/scan/CodeScanScreen';
-import { ScanInfoScreen } from '../screens/scan/ScanInfoScreen';
-import { BottomTabNavigator } from './BottomTabNavigator';
+import {useEffect, useState} from 'react';
+import {StorageAdapter} from '../../config/adapters/storage-adapter';
+import {LoadingScreen} from '../screens/loading/LoadingScreen';
+import {OnboardingScreen} from '../screens/onboarding/OnboardingScreen';
+import {ScanResultScreen} from '../screens/resultScan/ScanResultScreen';
+import {CodeScanScreen} from '../screens/scan/CodeScanScreen';
+import {ScanInfoScreen} from '../screens/scan/ScanInfoScreen';
+import {BottomTabNavigator} from './BottomTabNavigator';
 
 export type RootStackParams = {
   OnboardingScreen: undefined;
