@@ -15,7 +15,6 @@ export const OnboardingScreen = () => {
     Linking.openURL('https://akveo.github.io/react-native-ui-kitten/');
   };
 
-
   return (
     <Layout
       style={{
@@ -60,7 +59,13 @@ export const OnboardingScreen = () => {
 
       <Button
         status="primary"
-        style={{marginTop: 40, right: -100, opacity: checked ? 1 : 0}}
+        style={{
+          marginTop: 40,
+          right: -100,
+          opacity: checked ? 1 : 0,
+          backgroundColor: colors.primary,
+          borderWidth: 0,
+        }}
         // disabled={!checked}
         onPress={() => navigation.navigate('ScanInfoScreen')}>
         Siguiente

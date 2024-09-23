@@ -1,22 +1,73 @@
 import {Layout, Text} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
+import {Alert} from 'react-native';
 import {colors} from '../../../config/colors';
 import {StorageAdapter} from '../../../config/adapters/storage-adapter';
+import {LoadingScreen} from '../loading/LoadingScreen';
+
+interface UserData {
+  email: string;
+  phone: string;
+}
 
 export const HomeScreen = () => {
   const [userName, setUserName] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUserData = async () => {
       const name = await StorageAdapter.getItem('nameUser');
+      const dni = await StorageAdapter.getItem('dniUser');
+
+      if (!dni) {
+        Alert.alert('Error', 'No se encontró el DNI del usuario');
+        setLoading(false);
+        return;
+      }
+
       setUserName(name);
+      try {
+        const response = await fetch(
+          'http://192.168.0.6:3003/api/users/login',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({dni}),
+          },
+        );
+
+        const result = await response.json();
+
+        if (response.ok) {
+          setUserData({
+            email: result.user.email,
+            phone: result.user.phone,
+          });
+        } else {
+          Alert.alert(
+            'Error',
+            result.message || 'Error al obtener los datos del usuario',
+          );
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Error de red o servidor');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchUserName();
+    fetchUserData();
   }, []);
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
-    <Layout style={{flex: 1}}>
+    <Layout style={{flex: 1, backgroundColor: colors.background}}>
       <Layout
         style={{
           padding: 10,
@@ -27,18 +78,23 @@ export const HomeScreen = () => {
         </Text>
       </Layout>
 
-      <Layout style={{marginHorizontal: 20, gap: 30}}>
-        <Layout>
+      <Layout
+        style={{
+          marginHorizontal: 20,
+          gap: 30,
+          backgroundColor: colors.background,
+        }}>
+        <Layout style={{backgroundColor: colors.background}}>
           <Text category="h5">Nombre:</Text>
           <Text>{userName ? `Hola ${userName}` : 'Cargando...'}</Text>
         </Layout>
-        <Layout>
+        <Layout style={{backgroundColor: colors.background}}>
           <Text category="h5">Email:</Text>
-          <Text>algo@algo.com</Text>
+          <Text>{userData?.email || 'Cargando...'}</Text>
         </Layout>
-        <Layout>
+        <Layout style={{backgroundColor: colors.background}}>
           <Text category="h5">Teléfono:</Text>
-          <Text>1122334455</Text>
+          <Text>{userData?.phone || 'Cargando...'}</Text>
         </Layout>
       </Layout>
     </Layout>

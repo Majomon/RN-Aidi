@@ -5,6 +5,7 @@ export interface ThemeColors {
   background: string;
 
   text: string;
+  disabled: string;
 }
 
 export const colors: ThemeColors = {
@@ -14,4 +15,5 @@ export const colors: ThemeColors = {
   background: '#F1F6F8',
 
   text: '#D6E5Ea',
+  disabled: '#d3d3d3', // Color del botón deshabilitado
 };

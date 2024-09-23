@@ -74,17 +74,17 @@ export const StackNavigator = () => {
       <Stack.Screen
         name="CodeScanScreen"
         component={CodeScanScreen}
-        options={{cardStyleInterpolator: fadeAnimation,headerShown: false}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
       />
       <Stack.Screen
         name="ScanResultScreen"
         component={ScanResultScreen}
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, title: ''}}
       />
       <Stack.Screen
         name="BottomTabNavigator"
         component={BottomTabNavigator}
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
       />
     </Stack.Navigator>
   );
