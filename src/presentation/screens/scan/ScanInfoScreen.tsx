@@ -57,7 +57,7 @@ export const ScanInfoScreen = () => {
             backgroundColor: colors.primary,
             borderWidth: 0,
           }}
-          onPress={() => navigation.navigate('CodeScanScreen')}>
+          onPress={() => navigation.navigate('TakePhotoScreen')}>
           Siguiente
         </Button>
       </Layout>

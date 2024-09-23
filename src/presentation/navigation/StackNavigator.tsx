@@ -10,6 +10,7 @@ import {ScanResultScreen} from '../screens/resultScan/ScanResultScreen';
 import {CodeScanScreen} from '../screens/scan/CodeScanScreen';
 import {ScanInfoScreen} from '../screens/scan/ScanInfoScreen';
 import {BottomTabNavigator} from './BottomTabNavigator';
+import {TakePhotoScreen} from '../screens/takePhoto/TakePhotoScreen';
 
 export type RootStackParams = {
   OnboardingScreen: undefined;
@@ -17,6 +18,7 @@ export type RootStackParams = {
   CodeScanScreen: undefined;
   ScanResultScreen: {dni: string; name: string};
   BottomTabNavigator: undefined;
+  TakePhotoScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -74,6 +76,11 @@ export const StackNavigator = () => {
       <Stack.Screen
         name="CodeScanScreen"
         component={CodeScanScreen}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
+      />
+      <Stack.Screen
+        name="TakePhotoScreen"
+        component={TakePhotoScreen}
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
       />
       <Stack.Screen

@@ -1,6 +1,6 @@
 import {Layout, Text} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
-import {Alert} from 'react-native';
+import {Alert, Image} from 'react-native';
 import {colors} from '../../../config/colors';
 import {StorageAdapter} from '../../../config/adapters/storage-adapter';
 import {LoadingScreen} from '../loading/LoadingScreen';
@@ -12,6 +12,7 @@ interface UserData {
 
 export const HomeScreen = () => {
   const [userName, setUserName] = useState<string | null>(null);
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -19,6 +20,7 @@ export const HomeScreen = () => {
     const fetchUserData = async () => {
       const name = await StorageAdapter.getItem('nameUser');
       const dni = await StorageAdapter.getItem('dniUser');
+      const avatar = await StorageAdapter.getItem('userAvatar');
 
       if (!dni) {
         Alert.alert('Error', 'No se encontró el DNI del usuario');
@@ -27,6 +29,8 @@ export const HomeScreen = () => {
       }
 
       setUserName(name);
+      setUserAvatar(avatar);
+
       try {
         const response = await fetch(
           'http://192.168.0.6:3003/api/users/login',
@@ -73,9 +77,12 @@ export const HomeScreen = () => {
           padding: 10,
           backgroundColor: colors.primary,
         }}>
-        <Text category="h1" style={{textAlign: 'center'}}>
-          Datos
-        </Text>
+        <Image
+          source={{
+            uri: userAvatar || 'https://i.pravatar.cc/300',
+          }}
+          style={{width: 100, height: 100, borderRadius: 50}}
+        />
       </Layout>
 
       <Layout
