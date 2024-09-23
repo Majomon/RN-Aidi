@@ -58,24 +58,23 @@ export const StackNavigator = () => {
   if (!initialRoute) {
     return <LoadingScreen />;
   }
+
   return (
-    <Stack.Navigator
-      initialRouteName={initialRoute}
-      screenOptions={{headerShown: false}}>
+    <Stack.Navigator initialRouteName={initialRoute}>
       <Stack.Screen
         name="OnboardingScreen"
         component={OnboardingScreen}
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
       />
       <Stack.Screen
         name="ScanInfoScreen"
         component={ScanInfoScreen}
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
       />
       <Stack.Screen
         name="CodeScanScreen"
         component={CodeScanScreen}
-        options={{cardStyleInterpolator: fadeAnimation}}
+        options={{cardStyleInterpolator: fadeAnimation,headerShown: false}}
       />
       <Stack.Screen
         name="ScanResultScreen"

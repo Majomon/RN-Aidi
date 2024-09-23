@@ -47,12 +47,12 @@ export const ScanInfoScreen = () => {
       </Layout>
       <Layout
         style={{
-          width: 300,
+          width: "100%",
           alignItems: 'flex-end',
           marginTop: 200,
         }}>
         <Button
-          style={{width: 150}}
+          style={{width: "50%"}}
           onPress={() => navigation.navigate('CodeScanScreen')}>
           Siguiente
         </Button>
