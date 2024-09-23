@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
-import {Button, Image, Alert, PermissionsAndroid, Platform} from 'react-native';
+import {
+  Image,
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  StyleSheet,
+} from 'react-native';
 import {launchCamera} from 'react-native-image-picker';
-import {Layout, Text} from '@ui-kitten/components';
+import {Button, Layout, Text} from '@ui-kitten/components';
 import {colors} from '../../../config/colors';
 import {StorageAdapter} from '../../../config/adapters/storage-adapter';
 import {RootStackParams} from '../../navigation/StackNavigator';
@@ -93,12 +99,17 @@ export const TakePhotoScreen = ({navigation}: Props) => {
         <Text category="p1">Aún no has tomado una foto</Text>
       )}
 
-      <Button title="Tomar Foto" onPress={takePhoto} />
-      <Button
-        title="Continuar"
-        onPress={goToNextScreen}
-        color={colors.primary}
-      />
+      <Button onPress={takePhoto} style={styles.button}>
+        Tomar Foto
+      </Button>
+      <Button onPress={goToNextScreen} style={styles.button}>
+        Continuar
+      </Button>
     </Layout>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {width: 150},
+  buttonAction: {},
+});
