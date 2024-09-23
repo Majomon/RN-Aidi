@@ -11,7 +11,7 @@ interface FormData {
   name: string;
   email: string;
   phone: string;
-  cuil: number;
+  cuil: string;
 }
 
 interface Props extends StackScreenProps<RootStackParams, 'ScanResultScreen'> {}
@@ -25,11 +25,11 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
     name,
     email: '',
     phone: '',
-    cuil: 878,
+    cuil: '',
   });
 
   const handleChange = (
-    field: 'dni' | 'name' | 'email' | 'phone',
+    field: 'dni' | 'name' | 'email' | 'phone' | 'cuil',
     value: string,
   ) => {
     setFormData(prevState => ({
@@ -52,7 +52,8 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
 
     try {
       const response = await fetch(
-        'http://192.168.0.6:3003/api/users/register',
+        'https://aidi-back.vercel.app/api/users/register',
+        // 'http://192.168.0.6:3003/api/users/register',
         {
           method: 'POST',
           headers: {
@@ -66,6 +67,8 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
 
       if (response.ok) {
         await StorageAdapter.setItem('onboardingCompleted', 'true');
+        await StorageAdapter.setItem('nameUser', formData.name);
+
         setTimeout(() => {
           setLoading(false);
           navigation.reset({
@@ -98,7 +101,13 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
   return (
     <View style={styles.container}>
       <Input
-        placeholder="DNI"
+        placeholder="Nombre"
+        value={formData.name}
+        onChangeText={text => handleChange('name', text)}
+        style={styles.input}
+      />
+      <Input
+        placeholder="Dni"
         value={formData.dni}
         onChangeText={text => handleChange('dni', text)}
         keyboardType="numeric"
@@ -106,9 +115,11 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
         style={styles.input}
       />
       <Input
-        placeholder="Nombre"
-        value={formData.name}
-        onChangeText={text => handleChange('name', text)}
+        placeholder="Cuil"
+        value={formData.cuil}
+        onChangeText={text => handleChange('cuil', text)}
+        keyboardType="numeric"
+        maxLength={12}
         style={styles.input}
       />
       <Input

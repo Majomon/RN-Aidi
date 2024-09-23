@@ -15,8 +15,8 @@ export const CodeScanScreen = () => {
     
     if (parts.length >= 3) {
       return {
-        dni: parts[4], // Suponiendo que el DNI está en la quinta posición
-        name: `${parts[1]} ${parts[2]}`, // Suponiendo nombre y apellido en la segunda y tercera posición
+        dni: parts[4], 
+        name: `${parts[1]} ${parts[2]}`,
       };
     }
     return null;

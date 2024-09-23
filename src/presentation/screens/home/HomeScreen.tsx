@@ -1,8 +1,20 @@
 import {Layout, Text} from '@ui-kitten/components';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {colors} from '../../../config/colors';
+import {StorageAdapter} from '../../../config/adapters/storage-adapter';
 
 export const HomeScreen = () => {
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const name = await StorageAdapter.getItem('nameUser');
+      setUserName(name);
+    };
+
+    fetchUserName();
+  }, []);
+
   return (
     <Layout style={{flex: 1}}>
       <Layout
@@ -18,7 +30,7 @@ export const HomeScreen = () => {
       <Layout style={{marginHorizontal: 20, gap: 30}}>
         <Layout>
           <Text category="h5">Nombre:</Text>
-          <Text>Hola Juan</Text>
+          <Text>{userName ? `Hola ${userName}` : 'Cargando...'}</Text>
         </Layout>
         <Layout>
           <Text category="h5">Email:</Text>
