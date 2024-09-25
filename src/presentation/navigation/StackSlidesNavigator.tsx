@@ -1,6 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {SlidesScreen} from '../screens/slides/SlidesScreen';
 import {EmailScreen} from '../screens/slides/EmailScreen';
+import {SlidesScreen} from '../screens/slides/SlidesScreen';
+import {VerificationEmailScreen} from '../screens/slides/VerificationEmailScreen';
 
 export type SlidesStackParams = {
   SlidesScreen: undefined;
@@ -21,6 +22,11 @@ export const SlidesStackNavigator = () => {
       <SlidesStack.Screen
         name="EmailScreen"
         component={EmailScreen}
+        options={{headerShown: false}}
+      />
+      <SlidesStack.Screen
+        name="VerificationEmailScreen"
+        component={VerificationEmailScreen}
         options={{headerShown: false}}
       />
     </SlidesStack.Navigator>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -12,21 +12,18 @@ export const EmailScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [isError, setIsError] = useState(false);
-  const {register, token} = useRegisterStore(state => ({
-    register: state.register,
-    token: state.token,
-  }));
+  const {register, token} = useRegisterStore();
 
   const handleEmailSubmit = async () => {
     try {
       await register(email);
       setModalMessage('Código enviado con éxito. Revisa tu email.');
       setIsError(false);
-      setModalVisible(true);
     } catch (err: any) {
       setModalMessage(err.message);
       setIsError(true);
-      setModalVisible(true);
+    } finally {
+      setModalVisible(true); 
     }
   };
 
@@ -44,15 +41,10 @@ export const EmailScreen = () => {
   };
 
   return (
-    <Layout style={{padding: 20}}>
-      <Text style={{fontSize: 20, marginBottom: 20}}>Ingresa tu Email</Text>
+    <Layout style={styles.container}>
+      <Text style={styles.title}>Ingresa tu Email</Text>
       <Input
-        style={{
-          borderWidth: 1,
-          borderColor: '#ccc',
-          padding: 10,
-          marginBottom: 20,
-        }}
+        style={styles.input}
         placeholder="Tu email"
         value={email}
         onChangeText={setEmail}
@@ -61,7 +53,6 @@ export const EmailScreen = () => {
       />
       <Button onPress={handleEmailSubmit}>Enviar Código</Button>
 
-      {/* Modal para mostrar mensajes */}
       <Modal
         visible={modalVisible}
         backdropStyle={styles.backdrop}
@@ -78,6 +69,20 @@ export const EmailScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  title: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 20,
+  },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },

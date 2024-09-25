@@ -1,7 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
-import {Button} from '@ui-kitten/components';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Button } from '@ui-kitten/components';
 import LottieView from 'lottie-react-native';
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import {
   FlatList,
   NativeScrollEvent,
@@ -11,10 +12,8 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import {colors} from '../../../config/colors';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParams} from '../../navigation/StackNavigator';
-import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
+import { colors } from '../../../config/colors';
+import { SlidesStackParams } from '../../navigation/StackSlidesNavigator';
 
 interface Slide {
   title: string;
@@ -84,7 +83,14 @@ export const SlidesScreen = () => {
       {currentSlideIndex === items.length - 1 ? (
         <Button
           onPress={() => navigation.navigate('EmailScreen')}
-          style={{position: 'absolute', bottom: 60, right: 30, width: 150}}>
+          style={{
+            position: 'absolute',
+            bottom: 60,
+            right: 30,
+            width: 150,
+            backgroundColor: colors.primary,
+            borderWidth: 0,
+          }}>
           Finalizar
         </Button>
       ) : (

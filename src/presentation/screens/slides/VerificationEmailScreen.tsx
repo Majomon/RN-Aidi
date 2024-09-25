@@ -9,6 +9,7 @@ interface Props
 
 export const VerificationEmailScreen = ({navigation, route}: Props) => {
   const {token, email} = route.params;
+  
   const [verificationCode, setVerificationCode] = useState('');
 
   const handleCodeSubmit = async () => {

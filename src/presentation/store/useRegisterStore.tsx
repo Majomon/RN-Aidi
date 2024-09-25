@@ -4,11 +4,11 @@ import {create} from 'zustand';
 export interface RegisterState {
   token: string;
 
-  register: (email: string) => Promise<void>;
+  register: (email: string) => Promise<boolean>;
 }
 
 export const useRegisterStore = create<RegisterState>()((set, get) => ({
-  token: '', 
+  token: '',
 
   register: async (email: string) => {
     try {
@@ -20,6 +20,7 @@ export const useRegisterStore = create<RegisterState>()((set, get) => ({
       if (response.status === 200) {
         set({token: response.data.token});
       }
+      return true;
     } catch (err: any) {
       throw new Error(
         err.response.data.message || 'Ocurrió un error al enviar el email',
