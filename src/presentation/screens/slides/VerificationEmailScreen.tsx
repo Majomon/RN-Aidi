@@ -9,11 +9,12 @@ interface Props
 
 export const VerificationEmailScreen = ({navigation, route}: Props) => {
   const {token, email} = route.params;
+  console.log({token, email});
   
   const [verificationCode, setVerificationCode] = useState('');
 
   const handleCodeSubmit = async () => {
-    /*     try {
+    try {
       // Realiza la petición para verificar el código
       const response = await axios.post('YOUR_VERIFICATION_ENDPOINT', {
         token,
@@ -29,7 +30,7 @@ export const VerificationEmailScreen = ({navigation, route}: Props) => {
         'Error',
         'El código ingresado es incorrecto. Inténtalo de nuevo.',
       );
-    } */
+    }
   };
 
   return (
