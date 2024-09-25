@@ -3,8 +3,8 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {Button, CheckBox, Layout, Text} from '@ui-kitten/components';
 import React, {useState} from 'react';
 import {Image, Linking, useWindowDimensions} from 'react-native';
-import {RootStackParams} from '../../navigation/StackNavigator';
 import {colors} from '../../../config/colors';
+import {RootStackParams} from '../../navigation/StackNavigator';
 
 export const OnboardingScreen = () => {
   const {width, height} = useWindowDimensions();
@@ -67,7 +67,7 @@ export const OnboardingScreen = () => {
           borderWidth: 0,
         }}
         // disabled={!checked}
-        onPress={() => navigation.navigate('ScanInfoScreen')}>
+        onPress={() => navigation.navigate('SlidesStackNavigator')}>
         Siguiente
       </Button>
     </Layout>

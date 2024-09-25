@@ -14,6 +14,6 @@ export const colors: ThemeColors = {
   terciary: '#005E7A',
   background: '#F1F6F8',
 
-  text: '#D6E5Ea',
+  text: '#c0cace',
   disabled: '#d3d3d3', // Color del botón deshabilitado
 };
