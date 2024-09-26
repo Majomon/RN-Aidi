@@ -1,11 +1,13 @@
-import {StackScreenProps} from '@react-navigation/stack';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {Button, Input, Layout, Text} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet} from 'react-native';
 import {StorageAdapter} from '../../../config/adapters/storage-adapter';
-import {RootStackParams} from '../../navigation/StackNavigator';
-import {LoadingScreen} from '../loading/LoadingScreen';
 import {colors} from '../../../config/colors';
+import {RootStackParams} from '../../navigation/StackNavigator';
+import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
+import {LoadingScreen} from '../loading/LoadingScreen';
 
 interface FormData {
   dni: string;
@@ -15,18 +17,19 @@ interface FormData {
   cuil: string;
 }
 
-interface Props extends StackScreenProps<RootStackParams, 'ScanResultScreen'> {}
+export const ScanResultScreen = () => {
+  const route = useRoute<RouteProp<SlidesStackParams, 'ScanResultScreen'>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
-export const ScanResultScreen = ({route, navigation}: Props) => {
-  const {dni, name} = route.params;
+  const {dni, name, cuil} = route.params;
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     dni,
     name,
+    cuil,
     email: '',
     phone: '',
-    cuil: '',
   });
 
   const handleChange = (
@@ -96,6 +99,24 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
     }
   }, [formData]);
 
+  useEffect(() => {
+    const loadEmail = async () => {
+      const emailUser = await StorageAdapter.getItem('userEmail');
+      if (emailUser) {
+        setFormData(prevState => ({
+          ...prevState,
+          email: emailUser,
+        }));
+      }
+      
+    };
+
+    loadEmail();
+  }, []);
+
+  console.log(formData);
+
+
   if (loading) {
     return <LoadingScreen />;
   }
@@ -138,7 +159,7 @@ export const ScanResultScreen = ({route, navigation}: Props) => {
             value={formData.cuil}
             onChangeText={text => handleChange('cuil', text)}
             keyboardType="numeric"
-            maxLength={12}
+            maxLength={13}
             style={styles.input}
           />
         </Layout>

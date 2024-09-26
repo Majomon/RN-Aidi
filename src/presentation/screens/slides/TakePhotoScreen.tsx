@@ -1,19 +1,20 @@
+import {StackScreenProps} from '@react-navigation/stack';
+import {Button, Layout, Text} from '@ui-kitten/components';
 import React, {useState} from 'react';
 import {
-  Image,
   Alert,
+  Image,
   PermissionsAndroid,
   Platform,
   StyleSheet,
 } from 'react-native';
 import {launchCamera} from 'react-native-image-picker';
-import {Button, Layout, Text} from '@ui-kitten/components';
-import {colors} from '../../../config/colors';
 import {StorageAdapter} from '../../../config/adapters/storage-adapter';
-import {RootStackParams} from '../../navigation/StackNavigator';
-import {StackScreenProps} from '@react-navigation/stack';
+import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
+import {colors} from '../../../config/colors';
 
-interface Props extends StackScreenProps<RootStackParams, 'TakePhotoScreen'> {}
+interface Props
+  extends StackScreenProps<SlidesStackParams, 'TakePhotoScreen'> {}
 
 export const TakePhotoScreen = ({navigation}: Props) => {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
@@ -78,38 +79,54 @@ export const TakePhotoScreen = ({navigation}: Props) => {
 
   const goToNextScreen = () => {
     if (photoUri) {
-      navigation.navigate('CodeScanScreen'); // Redirige a la siguiente pantalla
+      navigation.navigate('ScanInfoScreen');
     } else {
       Alert.alert('Error', 'Por favor, toma una foto antes de continuar');
     }
   };
 
   return (
-    <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <Layout style={styles.container}>
       <Text category="h1" style={{marginBottom: 20}}>
-        Tomar una Foto
+        Sacate una selfie
       </Text>
+      <Layout style={styles.containerAction}>
+        {photoUri ? (
+          <Image
+            source={{uri: photoUri}}
+            style={{
+              width: 200,
+              height: 200,
+              borderRadius: 100,
+              marginBottom: 20,
+            }}
+          />
+        ) : (
+          <Text category="p1">Aún no has tomado una foto</Text>
+        )}
 
-      {photoUri ? (
-        <Image
-          source={{uri: photoUri}}
-          style={{width: 200, height: 200, borderRadius: 100, marginBottom: 20}}
-        />
-      ) : (
-        <Text category="p1">Aún no has tomado una foto</Text>
-      )}
-
-      <Button onPress={takePhoto} style={styles.button}>
-        Tomar Foto
-      </Button>
-      <Button onPress={goToNextScreen} style={styles.button}>
-        Continuar
-      </Button>
+        <Button onPress={takePhoto} style={styles.button}>
+          Tomar Foto
+        </Button>
+        {photoUri && (
+          <Button onPress={goToNextScreen} style={styles.button}>
+            Continuar
+          </Button>
+        )}
+      </Layout>
     </Layout>
   );
 };
 
 const styles = StyleSheet.create({
-  button: {width: 150},
-  buttonAction: {},
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  containerAction: {
+    gap: 30,
+    alignItems: 'center',
+  },
+  button: {width: 150, backgroundColor: colors.primary, borderWidth: 0},
 });

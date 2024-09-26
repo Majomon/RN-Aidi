@@ -1,35 +1,39 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, Button, Alert} from 'react-native';
-import axios from 'axios';
 import {StackScreenProps} from '@react-navigation/stack';
+import React, {useState} from 'react';
+import {Text, TextInput, View, Button, Modal} from 'react-native';
 import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
+import {useRegisterStore} from '../../store/useRegisterStore';
 
 interface Props
   extends StackScreenProps<SlidesStackParams, 'VerificationEmailScreen'> {}
 
 export const VerificationEmailScreen = ({navigation, route}: Props) => {
-  const {token, email} = route.params;
-  console.log({token, email});
-  
-  const [verificationCode, setVerificationCode] = useState('');
+  const {email} = route.params;
+  const {validateOtp} = useRegisterStore();
+  const [otpCode, setOtpCode] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isError, setIsError] = useState(false);
 
-  const handleCodeSubmit = async () => {
+  const handleVerifyOtp = async () => {
     try {
-      // Realiza la petición para verificar el código
-      const response = await axios.post('YOUR_VERIFICATION_ENDPOINT', {
-        token,
-        code: verificationCode,
-      });
+      await validateOtp(otpCode);
+      setModalMessage('Verificación exitosa de correo');
+      setIsError(false);
+      setModalVisible(true);
+    } catch (err: any) {
+      setModalMessage(err.message || 'Ocurrió un error al verificar el código');
+      setIsError(true);
+      setModalVisible(true);
+    }
+  };
 
-      // Si la verificación es exitosa, navega a TakePhotoScreen
-      if (response.status === 200) {
-        navigation.replace('TakePhotoScreen'); // Reemplaza la pantalla actual
-      }
-    } catch (err) {
-      Alert.alert(
-        'Error',
-        'El código ingresado es incorrecto. Inténtalo de nuevo.',
-      );
+  // Función para ocultar el modal y redirigir si la verificación fue exitosa
+  const handleModalDismiss = () => {
+    setModalVisible(false);
+    
+    if (!isError) {
+      navigation.replace('TakePhotoScreen');
     }
   };
 
@@ -46,11 +50,39 @@ export const VerificationEmailScreen = ({navigation, route}: Props) => {
           marginBottom: 20,
         }}
         placeholder="Código de verificación"
-        value={verificationCode}
-        onChangeText={setVerificationCode}
+        value={otpCode} // Almacena el valor en el estado otpCode
+        onChangeText={setOtpCode} // Almacena el código OTP en el estado
         keyboardType="numeric"
       />
-      <Button title="Verificar Código" onPress={handleCodeSubmit} />
+
+      {/* Botón para verificar el OTP */}
+      <Button title="Verificar Código" onPress={handleVerifyOtp} />
+
+      {/* Modal para mostrar mensajes */}
+      <Modal visible={modalVisible} transparent={true} animationType="slide">
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <View
+            style={{
+              width: 300,
+              padding: 20,
+              backgroundColor: 'white',
+              borderRadius: 10,
+              alignItems: 'center',
+            }}>
+            <Text>{modalMessage}</Text>
+            <Button
+              title={isError ? 'Cerrar' : 'Continuar'}
+              onPress={handleModalDismiss}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

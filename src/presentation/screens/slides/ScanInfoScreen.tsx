@@ -1,13 +1,13 @@
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {Button, Layout, Text} from '@ui-kitten/components';
 import React from 'react';
 import {Image} from 'react-native';
 import {colors} from '../../../config/colors';
-import {RootStackParams} from '../../navigation/StackNavigator';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/native';
+import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
 
 export const ScanInfoScreen = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+  const navigation = useNavigation<StackNavigationProp<SlidesStackParams>>();
 
   return (
     <Layout
@@ -26,7 +26,7 @@ export const ScanInfoScreen = () => {
             width: 300,
             height: 200,
             padding: 20,
-            marginTop: 20,
+            marginTop: 80,
             backgroundColor: colors.background,
             borderRadius: 20,
             resizeMode: 'contain',
@@ -57,7 +57,7 @@ export const ScanInfoScreen = () => {
             backgroundColor: colors.primary,
             borderWidth: 0,
           }}
-          onPress={() => navigation.navigate('TakePhotoScreen')}>
+          onPress={() => navigation.navigate('CodeScanScreen')}>
           Siguiente
         </Button>
       </Layout>

@@ -22,16 +22,16 @@ export const EmailScreen = () => {
     } catch (err: any) {
       setModalMessage(err.message);
       setIsError(true);
-    } finally {
-      setModalVisible(true); 
     }
+
+    setModalVisible(true);
   };
 
   const handleModalDismiss = () => {
     setModalVisible(false);
     if (!isError) {
       if (token) {
-        navigation.replace('VerificationEmailScreen', {token, email});
+        navigation.replace('VerificationEmailScreen', {email});
       } else {
         setModalMessage('El token no está disponible.');
         setIsError(true);
