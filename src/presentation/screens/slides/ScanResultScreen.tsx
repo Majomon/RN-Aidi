@@ -45,10 +45,11 @@ export const ScanResultScreen = () => {
   const handleSubmit = async () => {
     const dniNumber = Number(formData.dni);
     const phoneNumber = Number(formData.phone);
+    const cuilNumber = Number(formData.cuil);
 
     // Verificar si la conversión fue exitosa
-    if (isNaN(dniNumber) || isNaN(phoneNumber)) {
-      Alert.alert('Error', 'DNI o teléfono no son válidos');
+    if (isNaN(dniNumber) || isNaN(phoneNumber) || isNaN(cuilNumber)) {
+      Alert.alert('Error', 'DNI, teléfono o cuil no son válidos');
       return;
     }
 
@@ -108,14 +109,12 @@ export const ScanResultScreen = () => {
           email: emailUser,
         }));
       }
-      
     };
 
     loadEmail();
   }, []);
 
   console.log(formData);
-
 
   if (loading) {
     return <LoadingScreen />;
