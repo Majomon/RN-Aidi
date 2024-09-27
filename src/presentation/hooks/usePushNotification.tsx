@@ -1,8 +1,11 @@
 import messaging from '@react-native-firebase/messaging';
 import {Linking, PermissionsAndroid, Platform} from 'react-native';
 import {navigationRef} from '../navigation/navigationRef';
+import {useRegisterStore} from '../store/useRegisterStore';
 
 const usePushNotification = () => {
+  const {setTokenApp} = useRegisterStore();
+
   const requestUserPermission = async () => {
     if (Platform.OS === 'ios') {
       //Request iOS permission
@@ -25,6 +28,7 @@ const usePushNotification = () => {
   const getFCMToken = async () => {
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
+      setTokenApp(fcmToken);
       console.log('Your Firebase Token is:', fcmToken);
     } else {
       console.log('Failed', 'No token received');
@@ -72,7 +76,7 @@ const usePushNotification = () => {
 
         // Cuando recibe la notificacion redirige
         if (navigationRef.isReady()) {
-          navigationRef.navigate('ScanInfoScreen');
+          navigationRef.navigate('BottomTabNavigator');
         }
       },
     );

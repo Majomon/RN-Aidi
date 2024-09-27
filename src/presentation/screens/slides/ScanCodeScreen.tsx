@@ -8,7 +8,7 @@ import {colors} from '../../../config/colors';
 import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
 
 export const ScanCodeScreen = () => {
-  const [data, setData] = useState<string | null>(null);
+/*   const [data, setData] = useState<string | null>(null); */
   const navigation = useNavigation<StackNavigationProp<SlidesStackParams>>();
 
   const formatData = (
@@ -37,7 +37,6 @@ export const ScanCodeScreen = () => {
     const formattedData = formatData(data);
 
     if (formattedData) {
-      setData(data);
       navigation.navigate('ScanResultScreen', {
         dni: formattedData.dni,
         name: formattedData.name,

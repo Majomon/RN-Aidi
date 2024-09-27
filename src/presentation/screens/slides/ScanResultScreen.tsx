@@ -8,6 +8,7 @@ import {colors} from '../../../config/colors';
 import {RootStackParams} from '../../navigation/StackNavigator';
 import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
 import {LoadingScreen} from '../loading/LoadingScreen';
+import {useRegisterStore} from '../../store/useRegisterStore';
 
 interface FormData {
   dni: string;
@@ -15,11 +16,13 @@ interface FormData {
   email: string;
   phone: string;
   cuil: string;
+  tokenApp: string;
 }
 
 export const ScanResultScreen = () => {
   const route = useRoute<RouteProp<SlidesStackParams, 'ScanResultScreen'>>();
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+  const {tokenApp} = useRegisterStore();
 
   const {dni, name, cuil} = route.params;
   const [isFormComplete, setIsFormComplete] = useState(false);
@@ -30,6 +33,7 @@ export const ScanResultScreen = () => {
     cuil,
     email: '',
     phone: '',
+    tokenApp,
   });
 
   const handleChange = (
@@ -57,8 +61,9 @@ export const ScanResultScreen = () => {
 
     try {
       const response = await fetch(
-        // 'https://aidi-back.vercel.app/api/users/register',
+        // 'https://backaidideploy-production.up.railway.app/api/users/register',
         'http://192.168.0.6:3003/api/users/register',
+
         {
           method: 'POST',
           headers: {
