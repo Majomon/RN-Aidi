@@ -50,6 +50,9 @@ export const HomeScreen = () => {
             email: result.user.email,
             phone: result.user.phone,
           });
+
+          await StorageAdapter.setItem('tokenLogin', result.token);
+          console.log('Token guardado:', result.token);
         } else {
           Alert.alert(
             'Error',
@@ -64,6 +67,13 @@ export const HomeScreen = () => {
     };
 
     fetchUserData();
+
+    const getToken = async () => {
+      const token = await StorageAdapter.getItem('tokenLogin');
+      console.log('Token recuperado:', token);
+    };
+
+    getToken();
   }, []);
 
   if (loading) {

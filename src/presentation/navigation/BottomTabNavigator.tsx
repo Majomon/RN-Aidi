@@ -1,8 +1,8 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HomeScreen} from '../screens/home/HomeScreen';
-import {InteraccionScreen} from '../screens/Interaccion/InteraccionScreen';
-import {MyIcon} from '../components/ui/MyIcon';
 import {colors} from '../../config/colors';
+import {MyIcon} from '../components/ui/MyIcon';
+import {HomeScreen} from '../screens/home/HomeScreen';
+import {StackInteractions} from './StackInteractions';
 
 export type RootStackParamsBottom = {
   HomeScreen: undefined;
@@ -49,7 +49,7 @@ export const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="InteraccionScreen"
-        component={InteraccionScreen}
+        component={StackInteractions}
         options={{title: 'Mis intereacciones'}}
       />
     </Tab.Navigator>

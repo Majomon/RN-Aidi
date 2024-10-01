@@ -11,7 +11,7 @@ const interactions = [
   {id: '5', city: 'Ciudad E', time: '07:20 PM', weather: 'Despejado'},
 ];
 
-export const InteraccionScreen = () => {
+export const InteractionScreen = () => {
   const todayDate = new Date().toLocaleDateString();
 
   const renderItem = ({item}: {item: (typeof interactions)[0]}) => (
