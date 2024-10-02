@@ -11,7 +11,7 @@ export interface RegisterState {
     token: string,
     id: string,
     status: string,
-  ) => Promise<void>;
+  ) => Promise<{success: boolean; updatedTransaction?: any; message?: string}>;
 }
 
 export const useTransactionStore = create<RegisterState>()(set => ({
@@ -70,9 +70,17 @@ export const useTransactionStore = create<RegisterState>()(set => ({
     }
   },
 
-  putTransactionId: async (token: string, id: string, status: string) => {
+  putTransactionId: async (
+    token: string,
+    id: string,
+    status: string,
+  ): Promise<{
+    success: boolean;
+    updatedTransaction?: any;
+    message?: string;
+  }> => {
     if (!id) {
-      throw new Error('Token no disponible.');
+      throw new Error('ID no disponible.');
     }
 
     try {
@@ -87,13 +95,25 @@ export const useTransactionStore = create<RegisterState>()(set => ({
       );
 
       if (response.status === 200) {
-        console.log('Se cambio el estado de la transaccion');
+        return {
+          success: true,
+          updatedTransaction: response.data.transaction,
+        };
       }
+      
     } catch (err: any) {
-      throw new Error(
-        err.response?.data?.message ||
-          'Ocurrió un error al obtener las transacciones',
-      );
+      return {
+        success: false,
+        message:
+          err.response?.data?.message ||
+          'Error al cambiar el estado de la transacción',
+      };
     }
+
+    // En caso de que no se cumpla ninguna de las condiciones
+    return {
+      success: false,
+      message: 'No se pudo cambiar el estado de la transacción.',
+    };
   },
 }));
