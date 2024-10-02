@@ -7,8 +7,9 @@ import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {useEffect} from 'react';
 import {useColorScheme} from 'react-native';
 import usePushNotification from './presentation/hooks/usePushNotification';
-import {navigationRef} from './presentation/navigation/navigationRef';
+
 import {StackNavigator} from './presentation/navigation/StackNavigator';
+import { navigationRef } from './presentation/navigation/navigationRef';
 
 export const AidiApp = () => {
   const colorScheme = useColorScheme();

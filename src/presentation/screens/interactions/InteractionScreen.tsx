@@ -70,7 +70,7 @@ export const InteractionScreen = () => {
       case 'approved':
         return 'Aprobado';
       case 'disapproved':
-        return 'Desaprobado';
+        return 'Rechazado';
       case 'network_error':
         return 'Error de red';
       case 'user_not_found':

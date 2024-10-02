@@ -2,17 +2,19 @@ import {
   createStackNavigator,
   StackCardStyleInterpolator,
 } from '@react-navigation/stack';
-import { useEffect, useState } from 'react';
-import { StorageAdapter } from '../../config/adapters/storage-adapter';
-import { LoadingScreen } from '../screens/loading/LoadingScreen';
-import { OnboardingScreen } from '../screens/onboarding/OnboardingScreen';
-import { BottomTabNavigator } from './BottomTabNavigator';
-import { SlidesStackNavigator } from './StackSlidesNavigator';
+import {useEffect, useState} from 'react';
+import {StorageAdapter} from '../../config/adapters/storage-adapter';
+import {LoadingScreen} from '../screens/loading/LoadingScreen';
+import {OnboardingScreen} from '../screens/onboarding/OnboardingScreen';
+import {BottomTabNavigator} from './BottomTabNavigator';
+import {SlidesStackNavigator} from './StackSlidesNavigator';
+import { InteractionDetailScreen } from '../screens/interactions/InteractionDetailScreen';
 
 export type RootStackParams = {
   OnboardingScreen: undefined;
   SlidesStackNavigator: undefined;
   BottomTabNavigator: undefined;
+  InteractionDetailScreen: {idInteraction: string};
 };
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -70,6 +72,11 @@ export const StackNavigator = () => {
       <Stack.Screen
         name="BottomTabNavigator"
         component={BottomTabNavigator}
+        options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
+      />
+      <Stack.Screen
+        name="InteractionDetailScreen"
+        component={InteractionDetailScreen}
         options={{cardStyleInterpolator: fadeAnimation, headerShown: false}}
       />
     </Stack.Navigator>

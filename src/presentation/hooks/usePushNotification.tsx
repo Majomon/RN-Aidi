@@ -71,13 +71,20 @@ const usePushNotification = () => {
       async remoteMessage => {
         console.log(
           'La app esta en segundo plano, se procede a la navegacion:',
-          JSON.stringify(remoteMessage),
+          JSON.stringify(remoteMessage.data),
         );
 
         // Cuando recibe la notificacion redirige
-        if (navigationRef.isReady()) {
-          navigationRef.navigate('BottomTabNavigator');
-        }
+        const interval = setInterval(() => {
+          if (navigationRef.isReady()) {
+            navigationRef.navigate('InteractionDetailScreen', {
+              idInteraction: remoteMessage.data!.transactionId.toString(),
+            });
+            clearInterval(interval);
+          } else {
+            console.log('Esperando a que navigationRef esté listo...');
+          }
+        }, 100); // Verifica cada 100ms
       },
     );
     return unsubscribe;

@@ -1,4 +1,4 @@
-import {StackScreenProps} from '@react-navigation/stack';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
 import {StorageAdapter} from '../../../config/adapters/storage-adapter';
@@ -6,11 +6,16 @@ import {LayoutGoBack} from '../../components/ui/LayoutGoBack';
 import {InteractionStackParams} from '../../navigation/StackInteractions';
 import {useTransactionStore} from '../../store/useTransactionStore';
 import {Modal} from 'react-native';
+import {RootStackParamsBottom} from '../../navigation/BottomTabNavigator';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 
-interface Props extends StackScreenProps<InteractionStackParams> {}
+export const InteractionDetailScreen = () => {
+  const {idInteraction} =
+    useRoute<RouteProp<InteractionStackParams, 'InteractionDetailScreen'>>()
+      .params;
+  const navigation =
+    useNavigation<StackNavigationProp<RootStackParamsBottom>>();
 
-export const InteractionDetailScreen = ({route, navigation}: Props) => {
-  const id = route.params!.idInteraction;
   const {
     getTransactionId,
 
@@ -28,7 +33,7 @@ export const InteractionDetailScreen = ({route, navigation}: Props) => {
       case 'approved':
         return 'Aprobado';
       case 'disapproved':
-        return 'Desaprobado';
+        return 'Rechazado';
       case 'network_error':
         return 'Error de red';
       case 'user_not_found':
@@ -60,7 +65,7 @@ export const InteractionDetailScreen = ({route, navigation}: Props) => {
       }
 
       try {
-        await getTransactionId(token, id);
+        await getTransactionId(token, idInteraction);
       } catch (err) {
         setError('Error al obtener los detalles de la transacción.');
       } finally {
@@ -69,7 +74,7 @@ export const InteractionDetailScreen = ({route, navigation}: Props) => {
     };
 
     fetchTransactionDetails();
-  }, [id]);
+  }, [idInteraction]);
 
   const handleAccept = async () => {
     const token = await getToken();
@@ -79,7 +84,7 @@ export const InteractionDetailScreen = ({route, navigation}: Props) => {
     }
 
     try {
-      await putTransactionId(token, id, 'approved');
+      await putTransactionId(token, idInteraction, 'approved');
       setModalMessage('Transacción aceptada con éxito.');
     } catch (err) {
       setModalMessage('Error.');
@@ -96,7 +101,7 @@ export const InteractionDetailScreen = ({route, navigation}: Props) => {
     }
 
     try {
-      await putTransactionId(token, id, 'disapproved');
+      await putTransactionId(token, idInteraction, 'disapproved');
       setModalMessage('Transacción rechazada con éxito.');
     } catch (err) {
       setModalMessage('Error al rechazar la transacción.');
@@ -109,12 +114,16 @@ export const InteractionDetailScreen = ({route, navigation}: Props) => {
     setModalVisible(false);
     navigation.reset({
       index: 0,
-      routes: [{name: 'InteractionScreen'}],
+      routes: [{name: 'InteraccionScreen'}],
     });
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   if (error) {
