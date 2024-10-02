@@ -2,12 +2,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {InteractionDetailScreen} from '../screens/interactions/InteractionDetailScreen';
 import {InteractionScreen} from '../screens/interactions/InteractionScreen';
 
-export type SlidesStackParams = {
+export type InteractionStackParams = {
   InteractionScreen: undefined;
   InteractionDetailScreen: {idInteraction: string};
 };
 
-const Interactions = createStackNavigator<SlidesStackParams>();
+const Interactions = createStackNavigator<InteractionStackParams>();
 
 export const StackInteractions = () => {
   return (

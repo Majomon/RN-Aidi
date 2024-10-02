@@ -1,10 +1,215 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import {StackScreenProps} from '@react-navigation/stack';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
+import {StorageAdapter} from '../../../config/adapters/storage-adapter';
+import {LayoutGoBack} from '../../components/ui/LayoutGoBack';
+import {InteractionStackParams} from '../../navigation/StackInteractions';
+import {useTransactionStore} from '../../store/useTransactionStore';
+import {Modal} from 'react-native';
 
-export const InteractionDetailScreen = () => {
+interface Props extends StackScreenProps<InteractionStackParams> {}
+
+export const InteractionDetailScreen = ({route, navigation}: Props) => {
+  const id = route.params!.idInteraction;
+  const {
+    getTransactionId,
+
+    putTransactionId,
+    transactionId,
+  } = useTransactionStore();
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  const translateStatus = (status: string) => {
+    switch (status) {
+      case 'approved':
+        return 'Aprobado';
+      case 'disapproved':
+        return 'Desaprobado';
+      case 'network_error':
+        return 'Error de red';
+      case 'user_not_found':
+        return 'Usuario no encontrado';
+      case 'waiting_user':
+        return 'Pendiente';
+      default:
+        return status;
+    }
+  };
+
+  const getToken = async () => {
+    try {
+      const token = await StorageAdapter.getItem('tokenLogin');
+      return token;
+    } catch (err) {
+      setError('Error al obtener el token.');
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchTransactionDetails = async () => {
+      const token = await getToken();
+      if (!token) {
+        setError('Token no disponible.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        await getTransactionId(token, id);
+      } catch (err) {
+        setError('Error al obtener los detalles de la transacción.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTransactionDetails();
+  }, [id]);
+
+  const handleAccept = async () => {
+    const token = await getToken();
+    if (!token) {
+      setError('Token no disponible.');
+      return;
+    }
+
+    try {
+      await putTransactionId(token, id, 'approved');
+      setModalMessage('Transacción aceptada con éxito.');
+    } catch (err) {
+      setModalMessage('Error.');
+    } finally {
+      setModalVisible(true);
+    }
+  };
+
+  const handleReject = async () => {
+    const token = await getToken();
+    if (!token) {
+      setError('Token no disponible.');
+      return;
+    }
+
+    try {
+      await putTransactionId(token, id, 'disapproved');
+      setModalMessage('Transacción rechazada con éxito.');
+    } catch (err) {
+      setModalMessage('Error al rechazar la transacción.');
+    } finally {
+      setModalVisible(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'InteractionScreen'}],
+    });
+  };
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View style={styles.centeredView}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
+
   return (
-    <View>
-      <Text>InteractionDetailScreen</Text>
+    <View style={styles.container}>
+      <LayoutGoBack title="Volver" />
+      <Text style={styles.title}>Detalles de la Transacción</Text>
+      <Text style={styles.detail}>N° de operación: {transactionId?.id}</Text>
+      <Text style={styles.detail}>
+        Id de la empresa:
+        {transactionId?.id_company_origin
+          ? transactionId.id_company_origin
+          : '  Null'}
+      </Text>
+      <Text style={styles.detail}>Detalle: {transactionId?.detail}</Text>
+      <Text style={styles.detail}>
+        Estado: {translateStatus(transactionId?.status)}
+      </Text>
+
+      {transactionId?.status === 'network_error' ||
+      transactionId?.status === 'user_not_found' ||
+      transactionId?.status === 'waiting_user' ? (
+        <View style={styles.buttonContainer}>
+          <Button title="Aceptar" onPress={handleAccept} />
+          <Button title="Rechazar" onPress={handleReject} />
+        </View>
+      ) : null}
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleCloseModal}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{modalMessage}</Text>
+            <Button title="Cerrar" onPress={handleCloseModal} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  detail: {
+    fontSize: 18,
+    marginVertical: 8,
+    color: '#333',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 20,
+  },
+  centeredView: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    width: 250,
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+});
