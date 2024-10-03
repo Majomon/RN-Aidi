@@ -9,10 +9,7 @@ import {useColorScheme} from 'react-native';
 import usePushNotification from './presentation/hooks/usePushNotification';
 
 import {StackNavigator} from './presentation/navigation/StackNavigator';
-import { navigationRef } from './presentation/navigation/navigationRef';
-
-import {URL_BACK} from '@env';
-
+import {navigationRef} from './presentation/navigation/navigationRef';
 
 export const AidiApp = () => {
   const colorScheme = useColorScheme();
@@ -51,9 +48,6 @@ export const AidiApp = () => {
         translucent
       /> */
   }
-
-  console.log("URL_BACK: ", URL_BACK);
-  
 
   return (
     <>

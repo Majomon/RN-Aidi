@@ -16,7 +16,9 @@ export const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
+        tabBarStyle: {height: 60},
         headerShown: false,
+        tabBarLabelStyle:{fontSize:12, fontWeight:"bold"},
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.text,
         tabBarIcon: ({color, focused}) => {

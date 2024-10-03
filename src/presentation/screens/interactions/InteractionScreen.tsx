@@ -1,13 +1,13 @@
-import {Layout, Text} from '@ui-kitten/components';
-import React, {useEffect} from 'react';
-import {SectionList, Pressable, StyleSheet} from 'react-native';
-import {StorageAdapter} from '../../../config/adapters/storage-adapter';
-import {MyIcon} from '../../components/ui/MyIcon';
-import {useTransactionStore} from '../../store/useTransactionStore';
-import {Transaction} from '../../../interface/transaction.interface';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {InteractionStackParams} from '../../navigation/StackInteractions';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Layout, Text } from '@ui-kitten/components';
+import React, { useCallback, useEffect } from 'react';
+import { Pressable, SectionList, StyleSheet } from 'react-native';
+import { StorageAdapter } from '../../../config/adapters/storage-adapter';
+import { Transaction } from '../../../interface/transaction.interface';
+import { MyIcon } from '../../components/ui/MyIcon';
+import { InteractionStackParams } from '../../navigation/StackInteractions';
+import { useTransactionStore } from '../../store/useTransactionStore';
 
 export const InteractionScreen = () => {
   const today = new Date().toLocaleDateString();
@@ -15,22 +15,24 @@ export const InteractionScreen = () => {
   const navigation =
     useNavigation<StackNavigationProp<InteractionStackParams>>();
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const token = await StorageAdapter.getItem('tokenLogin');
-        if (token) {
-          await getTransactionsUser(token);
-        } else {
-          console.error('Token no disponible');
-        }
-      } catch (error: any) {
-        console.error('Error al obtener transacciones:', error.message);
-      }
-    };
-
-    fetchTransactions();
-  }, [getTransactionsUser]);
+    useFocusEffect(
+      useCallback(() => {
+        const fetchTransactions = async () => {
+          try {
+            const token = await StorageAdapter.getItem('tokenLogin');
+            if (token) {
+              await getTransactionsUser(token);
+            } else {
+              console.error('Token no disponible');
+            }
+          } catch (error: any) {
+            console.error('Error al obtener transacciones:', error.message);
+          }
+        };
+  
+        fetchTransactions();
+      }, [getTransactionsUser])
+    );
 
   const transactionsArray = transactions ? Object.values(transactions) : [];
 

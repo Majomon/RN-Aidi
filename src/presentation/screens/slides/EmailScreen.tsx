@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {Modal, Pressable, StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
-import {Button, Card, Input, Layout, Text} from '@ui-kitten/components';
-import {useRegisterStore} from '../../store/useRegisterStore';
+import {Button, Input, Layout, Text} from '@ui-kitten/components';
+import React, {useState} from 'react';
+import {Modal, Pressable, StyleSheet, View} from 'react-native';
 import {colors} from '../../../config/colors';
+import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
+import {useRegisterStore} from '../../store/useRegisterStore';
 
 export const EmailScreen = () => {
   const navigation = useNavigation<StackNavigationProp<SlidesStackParams>>();
@@ -15,8 +15,6 @@ export const EmailScreen = () => {
   const [isError, setIsError] = useState(false);
   const {sendEmail, token} = useRegisterStore();
 
-
-  
   const handleEmailSubmit = async () => {
     try {
       await sendEmail(email);

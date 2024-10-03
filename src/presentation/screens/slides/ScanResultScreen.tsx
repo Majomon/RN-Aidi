@@ -193,7 +193,7 @@ export const ScanResultScreen = () => {
             onChangeText={text => handleChange('phone', text)}
             // keyboardType="phone-pad" // Aca seria asi si en la bdd acepta string en lugar de numero
             keyboardType="numeric"
-            maxLength={8}
+            maxLength={10}
             style={styles.input}
           />
         </Layout>
