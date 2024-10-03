@@ -4,6 +4,7 @@ import {Alert, Image} from 'react-native';
 import {colors} from '../../../config/colors';
 import {StorageAdapter} from '../../../config/adapters/storage-adapter';
 import {LoadingScreen} from '../loading/LoadingScreen';
+import {URL_BACK} from '@env';
 
 interface UserData {
   email: string;
@@ -32,19 +33,18 @@ export const HomeScreen = () => {
       setUserAvatar(avatar);
 
       try {
-        const response = await fetch(
-          'http://192.168.0.6:3003/api/users/login',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({dni}),
+        const response = await fetch(`${URL_BACK}/api/users/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
+          body: JSON.stringify({dni}),
+        });
 
         const result = await response.json();
 
+        console.log(result);
+        
         if (response.ok) {
           setUserData({
             email: result.user.email,
@@ -67,13 +67,6 @@ export const HomeScreen = () => {
     };
 
     fetchUserData();
-
-/*     const getToken = async () => {
-      const token = await StorageAdapter.getItem('tokenLogin');
-      console.log('Token del login recuperado:', token);
-    };
-
-    getToken(); */
   }, []);
 
   if (loading) {

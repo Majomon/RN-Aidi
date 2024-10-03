@@ -11,6 +11,9 @@ import usePushNotification from './presentation/hooks/usePushNotification';
 import {StackNavigator} from './presentation/navigation/StackNavigator';
 import { navigationRef } from './presentation/navigation/navigationRef';
 
+import {URL_BACK} from '@env';
+
+
 export const AidiApp = () => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === 'dark' ? eva.dark : eva.light;
@@ -48,6 +51,9 @@ export const AidiApp = () => {
         translucent
       /> */
   }
+
+  console.log("URL_BACK: ", URL_BACK);
+  
 
   return (
     <>

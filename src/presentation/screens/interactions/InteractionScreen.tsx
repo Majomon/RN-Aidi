@@ -82,6 +82,11 @@ export const InteractionScreen = () => {
     }
   };
 
+  // Función para truncar texto largo
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  };
+
   const renderTransaction = ({item}: {item: Transaction}) => {
     const transactionTime = new Date(item.date).toLocaleTimeString();
 
@@ -97,7 +102,7 @@ export const InteractionScreen = () => {
           <MyIcon name="radio-button-off-outline" />
           <Layout>
             <Text style={styles.city}>Empresa</Text>
-            <Text style={styles.city}>{item.detail}</Text>
+            <Text style={styles.city}>{truncateText(item.detail, 8)}</Text>
           </Layout>
           <Layout style={styles.statusContainer}>
             <Text style={styles.status}>{translateStatus(item.status)}</Text>
@@ -113,19 +118,29 @@ export const InteractionScreen = () => {
   );
 
   return (
-    <SectionList
-      sections={sections}
-      keyExtractor={(item, index) => item.id.toString() + index}
-      renderItem={renderTransaction}
-      renderSectionHeader={renderSectionHeader}
-      contentContainerStyle={styles.container}
-    />
+    <Layout style={styles.container}>
+      {sections.length === 0 ||
+      sections.every(section => section.data.length === 0) ? (
+        <Text style={styles.noTransactionsText}>
+          No hay interacciones disponibles
+        </Text>
+      ) : (
+        <SectionList
+          sections={sections}
+          keyExtractor={(item, index) => item.id.toString() + index}
+          renderItem={renderTransaction}
+          renderSectionHeader={renderSectionHeader}
+          contentContainerStyle={styles.container}
+        />
+      )}
+    </Layout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flex: 1,
+    padding: 10,
   },
   title: {
     fontSize: 24,
@@ -139,16 +154,16 @@ const styles = StyleSheet.create({
   },
   interactionContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
+    padding: 4,
     backgroundColor: '#f9f9f9',
     borderRadius: 8,
     marginVertical: 5,
   },
   detailContainer1: {
+    flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    gap: 30,
   },
   statusContainer: {
     gap: 1,

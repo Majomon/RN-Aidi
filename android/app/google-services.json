@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "40547065362",
-    "project_id": "aidiapp-8d0c4",
-    "storage_bucket": "aidiapp-8d0c4.appspot.com"
+    "project_number": "937672417582",
+    "project_id": "aidiapp-401ec",
+    "storage_bucket": "aidiapp-401ec.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:40547065362:android:4bc300b3edc26704a542cb",
+        "mobilesdk_app_id": "1:937672417582:android:70f15a9a17bb4291dc5abf",
         "android_client_info": {
           "package_name": "com.aidiapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD1gn6S_2Xdmmmmdo9cZUNsAA_rL1bx5fc"
+          "current_key": "AIzaSyBTryZ-XICTKQrhQ34mry0o-RCdFBrjpzo"
         }
       ],
       "services": {

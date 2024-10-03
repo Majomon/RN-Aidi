@@ -9,6 +9,7 @@ import {RootStackParams} from '../../navigation/StackNavigator';
 import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
 import {LoadingScreen} from '../loading/LoadingScreen';
 import {useRegisterStore} from '../../store/useRegisterStore';
+import {URL_BACK} from '@env';
 
 interface FormData {
   dni: string;
@@ -46,6 +47,7 @@ export const ScanResultScreen = () => {
     }));
   };
 
+  
   const handleSubmit = async () => {
     const dniNumber = Number(formData.dni);
     const phoneNumber = Number(formData.phone);
@@ -61,8 +63,8 @@ export const ScanResultScreen = () => {
 
     try {
       const response = await fetch(
-        // 'https://backaidideploy-production.up.railway.app/api/users/register',
-        'http://192.168.0.6:3003/api/users/register',
+        // 'http://192.168.0.6:3003/api/users/register',
+        `${URL_BACK}/api/users/register`,
 
         {
           method: 'POST',
