@@ -60,10 +60,9 @@ export const ScanResultScreen = () => {
     }
 
     setLoading(true);
-
+    
     try {
       const response = await fetch(
-        // 'http://192.168.0.6:3003/api/users/register',
         `${URL_BACK}/api/users/register`,
 
         {
@@ -74,7 +73,7 @@ export const ScanResultScreen = () => {
           body: JSON.stringify(formData),
         },
       );
-
+      
       const result = await response.json();
 
       if (response.ok) {
@@ -91,7 +90,7 @@ export const ScanResultScreen = () => {
         }, 1000);
       } else {
         setLoading(false);
-        Alert.alert('Error', result.message || 'Error al guardar los datos');
+        Alert.alert('Error', result.error || 'Error al guardar los datos');
       }
     } catch (error) {
       Alert.alert('Error', 'Error de red o servidor');
@@ -120,8 +119,6 @@ export const ScanResultScreen = () => {
 
     loadEmail();
   }, []);
-
-  console.log(formData);
 
   if (loading) {
     return <LoadingScreen />;

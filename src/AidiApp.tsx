@@ -10,6 +10,7 @@ import usePushNotification from './presentation/hooks/usePushNotification';
 
 import {StackNavigator} from './presentation/navigation/StackNavigator';
 import {navigationRef} from './presentation/navigation/navigationRef';
+import { URL_BACK } from '@env';
 
 export const AidiApp = () => {
   const colorScheme = useColorScheme();

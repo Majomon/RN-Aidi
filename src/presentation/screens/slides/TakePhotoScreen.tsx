@@ -72,7 +72,6 @@ export const TakePhotoScreen = ({navigation}: Props) => {
     if (result.assets && result.assets[0].uri) {
       const uri = result.assets[0].uri;
       setPhotoUri(uri);
-      console.log(uri);
       await StorageAdapter.setItem('userAvatar', uri);
     }
   };

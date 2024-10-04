@@ -19,38 +19,43 @@ export const HomeScreen = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const name = await StorageAdapter.getItem('nameUser');
-      const dni = await StorageAdapter.getItem('dniUser');
-      const avatar = await StorageAdapter.getItem('userAvatar');
-
-      if (!dni) {
-        Alert.alert('Error', 'No se encontró el DNI del usuario');
-        setLoading(false);
-        return;
-      }
-
-      setUserName(name);
-      setUserAvatar(avatar);
-
       try {
+        // Obtén los datos del almacenamiento
+        const name = await StorageAdapter.getItem('nameUser');
+        const storedDni = await StorageAdapter.getItem('dniUser');
+        const avatar = await StorageAdapter.getItem('userAvatar');
+
+        // Si no hay DNI, muestra una alerta y no procede con el fetch
+        if (!storedDni) {
+          Alert.alert('Error', 'No se encontró el DNI del usuario');
+          setLoading(false);
+          return;
+        }
+
+        // Actualiza el estado para mostrar la UI de usuario
+        setUserName(name);
+        setUserAvatar(avatar);
+
+        // Realiza la llamada fetch después de asegurar que el DNI existe
         const response = await fetch(`${URL_BACK}/api/users/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({dni}),
+          body: JSON.stringify({dni: storedDni}), 
         });
 
         const result = await response.json();
 
-        console.log(result);
-        
+
+        // Manejo de la respuesta del servidor
         if (response.ok) {
           setUserData({
             email: result.user.email,
             phone: result.user.phone,
           });
 
+          // Guarda el token en el Storage
           await StorageAdapter.setItem('tokenLogin', result.token);
           console.log('Token guardado del login:', result.token);
         } else {
@@ -62,12 +67,12 @@ export const HomeScreen = () => {
       } catch (error) {
         Alert.alert('Error', 'Error de red o servidor');
       } finally {
-        setLoading(false);
+        setLoading(false); 
       }
     };
 
     fetchUserData();
-  }, []);
+  }, []); 
 
   if (loading) {
     return <LoadingScreen />;

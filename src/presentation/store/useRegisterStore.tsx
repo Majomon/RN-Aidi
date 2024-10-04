@@ -14,7 +14,7 @@ export interface RegisterState {
 
 export const useRegisterStore = create<RegisterState>()((set, get) => ({
   token: '',
-  tokenApp: '', // inicialización del estado
+  tokenApp: '',
 
   sendEmail: async (email: string) => {
     try {
@@ -69,4 +69,5 @@ export const useRegisterStore = create<RegisterState>()((set, get) => ({
   setTokenApp: (fcmToken: string) => {
     set({tokenApp: fcmToken});
   },
+  
 }));

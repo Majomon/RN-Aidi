@@ -1,13 +1,19 @@
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {StorageAdapter} from '../../../config/adapters/storage-adapter';
 import {LayoutGoBack} from '../../components/ui/LayoutGoBack';
+import {RootStackParamsBottom} from '../../navigation/BottomTabNavigator';
 import {InteractionStackParams} from '../../navigation/StackInteractions';
 import {useTransactionStore} from '../../store/useTransactionStore';
-import {Modal} from 'react-native';
-import {RootStackParamsBottom} from '../../navigation/BottomTabNavigator';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 
 export const InteractionDetailScreen = () => {
   const {idInteraction} =
@@ -15,7 +21,6 @@ export const InteractionDetailScreen = () => {
       .params;
   const navigation =
     useNavigation<StackNavigationProp<RootStackParamsBottom>>();
-
   const {
     getTransactionId,
 
@@ -27,6 +32,7 @@ export const InteractionDetailScreen = () => {
   const [error, setError] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const translateStatus = (status: string) => {
     switch (status) {
@@ -112,13 +118,16 @@ export const InteractionDetailScreen = () => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'InteraccionScreen'}],
-    });
+    setIsNavigating(true);
+    setTimeout(() => {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'InteraccionScreen'}],
+      });
+    }, 300);
   };
 
-  if (loading) {
+  if (loading || isNavigating) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" color="#0000ff" />

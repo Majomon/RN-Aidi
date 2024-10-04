@@ -1,13 +1,13 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Layout, Text } from '@ui-kitten/components';
-import React, { useCallback, useEffect } from 'react';
-import { Pressable, SectionList, StyleSheet } from 'react-native';
-import { StorageAdapter } from '../../../config/adapters/storage-adapter';
-import { Transaction } from '../../../interface/transaction.interface';
-import { MyIcon } from '../../components/ui/MyIcon';
-import { InteractionStackParams } from '../../navigation/StackInteractions';
-import { useTransactionStore } from '../../store/useTransactionStore';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {Layout, Text} from '@ui-kitten/components';
+import React, {useCallback, useEffect} from 'react';
+import {Pressable, SectionList, StyleSheet} from 'react-native';
+import {StorageAdapter} from '../../../config/adapters/storage-adapter';
+import {Transaction} from '../../../interface/transaction.interface';
+import {MyIcon} from '../../components/ui/MyIcon';
+import {InteractionStackParams} from '../../navigation/StackInteractions';
+import {useTransactionStore} from '../../store/useTransactionStore';
 
 export const InteractionScreen = () => {
   const today = new Date().toLocaleDateString();
@@ -15,24 +15,25 @@ export const InteractionScreen = () => {
   const navigation =
     useNavigation<StackNavigationProp<InteractionStackParams>>();
 
-    useFocusEffect(
-      useCallback(() => {
-        const fetchTransactions = async () => {
-          try {
-            const token = await StorageAdapter.getItem('tokenLogin');
-            if (token) {
-              await getTransactionsUser(token);
-            } else {
-              console.error('Token no disponible');
-            }
-          } catch (error: any) {
-            console.error('Error al obtener transacciones:', error.message);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchTransactions = async () => {
+        console.log('Pantalla InteractionScreen en foco');
+        try {
+          const token = await StorageAdapter.getItem('tokenLogin');
+          if (token) {
+            await getTransactionsUser(token);
+          } else {
+            console.error('Token no disponible');
           }
-        };
-  
-        fetchTransactions();
-      }, [getTransactionsUser])
-    );
+        } catch (error: any) {
+          console.error('Error al obtener transacciones:', error.message);
+        }
+      };
+
+      fetchTransactions();
+    }, [getTransactionsUser]),
+  );
 
   const transactionsArray = transactions ? Object.values(transactions) : [];
 

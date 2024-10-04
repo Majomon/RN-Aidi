@@ -28,8 +28,8 @@ const usePushNotification = () => {
   const getFCMToken = async () => {
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
-      setTokenApp(fcmToken);
       console.log('Your Firebase Token is:', fcmToken);
+      setTokenApp(fcmToken);
     } else {
       console.log('Failed', 'No token received');
     }
@@ -100,12 +100,16 @@ const usePushNotification = () => {
         JSON.stringify(message),
       );
 
-      // Espera a que navigationRef esté listo antes de navegar
-      if (navigationRef.isReady()) {
-        navigationRef.navigate('BottomTabNavigator');
-      } else {
-        console.log('No se pudo realizar la navegación.');
-      }
+      const interval = setInterval(() => {
+        if (navigationRef.isReady()) {
+          navigationRef.navigate('InteractionDetailScreen', {
+            idInteraction: message.data!.transactionId.toString(),
+          });
+          clearInterval(interval);
+        } else {
+          console.log('Esperando a que navigationRef esté listo...');
+        }
+      }, 100); 
     }
   };
 

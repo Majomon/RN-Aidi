@@ -26,7 +26,6 @@ export const useTransactionStore = create<RegisterState>()(set => ({
 
     try {
       const response = await axios.get(
-        // 'http://192.168.0.6:3003/api/transactions/user',
         `${URL_BACK}/api/transactions/user`,
         {
           headers: {
@@ -34,9 +33,10 @@ export const useTransactionStore = create<RegisterState>()(set => ({
           },
         },
       );
+ 
 
       if (response.status === 200) {
-        set({transactions: response.data.transactions});
+        set({transactions: response.data?.transactions});
       }
     } catch (err: any) {
       throw new Error(
