@@ -47,7 +47,6 @@ export const ScanResultScreen = () => {
     }));
   };
 
-  
   const handleSubmit = async () => {
     const dniNumber = Number(formData.dni);
     const phoneNumber = Number(formData.phone);
@@ -60,7 +59,9 @@ export const ScanResultScreen = () => {
     }
 
     setLoading(true);
-    
+
+    const {name, ...formDataToSend} = formData;
+
     try {
       const response = await fetch(
         `${URL_BACK}/api/users/register`,
@@ -70,15 +71,15 @@ export const ScanResultScreen = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formDataToSend),
         },
       );
-      
+
       const result = await response.json();
 
       if (response.ok) {
         await StorageAdapter.setItem('onboardingCompleted', 'true');
-        await StorageAdapter.setItem('nameUser', formData.name);
+        await StorageAdapter.setItem('nameUser', name);
         await StorageAdapter.setItem('dniUser', formData.dni);
 
         setTimeout(() => {
@@ -93,6 +94,8 @@ export const ScanResultScreen = () => {
         Alert.alert('Error', result.error || 'Error al guardar los datos');
       }
     } catch (error) {
+      console.log(error);
+
       Alert.alert('Error', 'Error de red o servidor');
     }
   };

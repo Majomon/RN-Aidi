@@ -1,11 +1,10 @@
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {Layout, Text} from '@ui-kitten/components';
-import React, {useState} from 'react';
-import {Alert, StyleSheet} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Layout, Text } from '@ui-kitten/components';
+import { Alert, StyleSheet } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {colors} from '../../../config/colors';
-import {SlidesStackParams} from '../../navigation/StackSlidesNavigator';
+import { colors } from '../../../config/colors';
+import { SlidesStackParams } from '../../navigation/StackSlidesNavigator';
 
 export const ScanCodeScreen = () => {
 /*   const [data, setData] = useState<string | null>(null); */

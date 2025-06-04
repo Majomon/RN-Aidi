@@ -120,10 +120,11 @@ export const InteractionDetailScreen = () => {
     setModalVisible(false);
     setIsNavigating(true);
     setTimeout(() => {
-      navigation.reset({
+      /*    navigation.reset({
         index: 0,
-        routes: [{name: 'InteraccionScreen'}],
-      });
+        routes: [{name: 'HomeScreen'}],
+      }); */
+      navigation.navigate('HomeScreen');
     }, 300);
   };
 

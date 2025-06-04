@@ -1,7 +1,7 @@
-import { URL_BACK } from '@env';
+import {URL_BACK} from '@env';
 import axios from 'axios';
-import { create } from 'zustand';
-import { StorageAdapter } from '../../config/adapters/storage-adapter';
+import {create} from 'zustand';
+import {StorageAdapter} from '../../config/adapters/storage-adapter';
 
 export interface RegisterState {
   token: string;
@@ -69,5 +69,4 @@ export const useRegisterStore = create<RegisterState>()((set, get) => ({
   setTokenApp: (fcmToken: string) => {
     set({tokenApp: fcmToken});
   },
-  
 }));
